@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EyeGuide - AI-Powered Vision Assistant for the Visually Impaired</title>
+  <meta name="description" content="EyeGuide uses advanced AI to help visually impaired people navigate the world. Scene description, text reading, object finding, and social assistance — all through your phone's camera.">
+  <meta name="theme-color" content="#F5F5F7">
+  <link rel="canonical" href="https://eyeguide-landing.pages.dev/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="EyeGuide - AI-Powered Vision Assistant">
+  <meta property="og:description" content="Navigate the world with confidence. EyeGuide uses AI to describe scenes, read text, find objects, and assist with social interactions.">
+  <meta property="og:url" content="https://eyeguide-landing.pages.dev/">
+  <meta property="og:site_name" content="EyeGuide">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="EyeGuide - AI-Powered Vision Assistant">
+  <meta name="twitter:description" content="Navigate the world with confidence. EyeGuide uses AI to describe scenes, read text, find objects, and assist with social interactions.">
+
+  <!-- Preload critical font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <link rel="stylesheet" href="/styles.css">
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "EyeGuide",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "iOS, Android",
+    "description": "AI-powered vision assistant that helps visually impaired people navigate, read text, find objects, and understand social situations through real-time camera analysis.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "featureList": [
+      "Real-time scene description for navigation",
+      "Text reading from signs, menus, and documents",
+      "Object finding with directional guidance",
+      "Social situation assistance with expression recognition"
+    ]
+  }
+  </script>
+</head>
+<body class="bg-bg text-ink font-sans antialiased">
+
+  <!-- Skip navigation for keyboard/screen reader users (WCAG 2.4.1) -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-ink focus:text-surface focus:px-4 focus:py-2 focus:rounded-lg focus:text-sm focus:font-semibold">
+    Skip to main content
+  </a>
+
+  <!-- Noscript fallback: show all content if JS is disabled -->
+  <noscript>
+    <style>.animate-on-scroll { opacity: 1 !important; transform: none !important; }</style>
+  </noscript>
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-surface/80 backdrop-blur-lg border-b border-surface-variant/50" aria-label="Main navigation">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-2" aria-label="EyeGuide home">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <circle cx="16" cy="16" r="14" fill="#C8B8FF"/>
+          <circle cx="16" cy="16" r="6" fill="#1A1A1A"/>
+          <circle cx="18" cy="14" r="2" fill="#FFFFFF"/>
+        </svg>
+        <span class="text-xl font-bold">EyeGuide</span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#features" class="text-secondary hover:text-ink transition-colors text-sm font-medium">Features</a>
+        <a href="#how-it-works" class="text-secondary hover:text-ink transition-colors text-sm font-medium">How It Works</a>
+        <a href="#download" class="inline-flex items-center gap-2 bg-ink text-surface px-5 py-2.5 rounded-[var(--radius-button)] text-sm font-semibold cta-secondary hover:bg-ink-light" aria-label="Download EyeGuide app">
+          Download App
+        </a>
+      </div>
+
+      <!-- Mobile Menu Toggle -->
+      <button
+        id="mobile-menu-toggle"
+        class="md:hidden p-3 -mr-3 min-w-[48px] min-h-[48px] flex items-center justify-center"
+        aria-label="Toggle navigation menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="mobile-menu md:hidden border-t border-surface-variant/50">
+      <div class="max-w-6xl mx-auto px-6 py-4 flex flex-col gap-4">
+        <a href="#features" class="text-secondary hover:text-ink transition-colors text-sm font-medium py-2">Features</a>
+        <a href="#how-it-works" class="text-secondary hover:text-ink transition-colors text-sm font-medium py-2">How It Works</a>
+        <a href="#download" class="inline-flex items-center justify-center gap-2 bg-ink text-surface px-5 py-3 rounded-[var(--radius-button)] text-sm font-semibold" aria-label="Download EyeGuide app">
+          Download App
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main-content">
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center overflow-hidden pt-20" aria-label="Hero">
+      <!-- Background -->
+      <div class="absolute inset-0 hero-gradient opacity-30" aria-hidden="true"></div>
+
+      <!-- Decorative floating elements -->
+      <div class="absolute top-32 right-[10%] w-20 h-20 rounded-full bg-lavender/20 float-slow hidden lg:block" aria-hidden="true"></div>
+      <div class="absolute bottom-40 left-[5%] w-14 h-14 rounded-full bg-lime/20 float-medium hidden lg:block" aria-hidden="true"></div>
+      <div class="absolute top-[40%] right-[25%] w-8 h-8 rounded-full bg-lavender-light/30 float-medium hidden lg:block" aria-hidden="true"></div>
+
+      <div class="relative max-w-6xl mx-auto px-6 py-20 md:py-32">
+        <div class="max-w-3xl">
+          <!-- Status badge - mirrors the app's AI status indicator -->
+          <div class="inline-flex items-center gap-2 bg-surface/80 backdrop-blur-sm px-4 py-2 rounded-[var(--radius-badge)] border border-surface-variant mb-8 animate-on-scroll">
+            <span class="w-2 h-2 rounded-full bg-success pulse-dot" aria-hidden="true"></span>
+            <span class="text-sm font-medium text-secondary">AI-Powered Vision Assistant</span>
+          </div>
+
+          <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight animate-on-scroll">
+            See the World<br>
+            <span class="text-lavender-dark">Through Sound</span>
+          </h1>
+
+          <p class="mt-6 text-lg md:text-xl text-secondary max-w-xl leading-relaxed animate-on-scroll">
+            EyeGuide uses advanced AI to help visually impaired people navigate confidently.
+            Describe scenes, read text, find objects, and understand social situations — all in real time.
+          </p>
+
+          <div class="mt-10 flex flex-col sm:flex-row gap-4 animate-on-scroll">
+            <a
+              href="#download"
+              class="cta-primary inline-flex items-center justify-center gap-2 bg-lime text-ink px-8 py-4 rounded-[var(--radius-button)] text-base font-semibold min-h-[48px]"
+              aria-label="Download EyeGuide for free"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Download Free
+            </a>
+            <a
+              href="#features"
+              class="cta-secondary inline-flex items-center justify-center gap-2 bg-surface text-ink px-8 py-4 rounded-[var(--radius-button)] text-base font-semibold border border-surface-variant min-h-[48px]"
+              aria-label="Learn more about EyeGuide features"
+            >
+              Learn More
+            </a>
+          </div>
+
+          <!-- Platform badges -->
+          <div class="mt-8 flex items-center gap-4 text-sm text-secondary animate-on-scroll">
+            <span class="flex items-center gap-1.5">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+              iOS
+            </span>
+            <span class="flex items-center gap-1.5">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.523 2.149a.5.5 0 0 0-.863.058L14.897 5.47a11.588 11.588 0 0 0-5.794 0L7.34 2.207a.5.5 0 0 0-.863-.058C4.4 5.063 3 8.394 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-3.606-1.4-6.937-3.477-9.851zM9.5 14a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>
+              Android
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 md:py-32 bg-surface" aria-labelledby="features-heading">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+          <h2 id="features-heading" class="text-3xl md:text-4xl font-bold animate-on-scroll">
+            Your AI Eyes, Always Ready
+          </h2>
+          <p class="mt-4 text-lg text-secondary animate-on-scroll">
+            Four powerful modes designed for real-world independence, powered by advanced AI vision.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Scene Description -->
+          <article class="feature-card bg-bg p-8 rounded-[var(--radius-card)] border border-surface-variant/50 animate-on-scroll stagger-1">
+            <div class="w-12 h-12 rounded-full bg-lavender/20 flex items-center justify-center mb-6">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9B88E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Scene Description</h3>
+            <p class="text-secondary leading-relaxed">
+              Point your camera and hear a natural description of your surroundings. EyeGuide identifies obstacles, pathways, vehicles, and landmarks to help you navigate safely.
+            </p>
+          </article>
+
+          <!-- Text Reading -->
+          <article class="feature-card bg-bg p-8 rounded-[var(--radius-card)] border border-surface-variant/50 animate-on-scroll stagger-2">
+            <div class="w-12 h-12 rounded-full bg-lavender/20 flex items-center justify-center mb-6">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9B88E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+                <polyline points="10 9 9 9 8 9"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Text Reading</h3>
+            <p class="text-secondary leading-relaxed">
+              Read signs, menus, mail, and documents aloud. Simply capture an image and EyeGuide reads every word in natural, conversational speech.
+            </p>
+          </article>
+
+          <!-- Object Finding -->
+          <article class="feature-card bg-bg p-8 rounded-[var(--radius-card)] border border-surface-variant/50 animate-on-scroll stagger-3">
+            <div class="w-12 h-12 rounded-full bg-lavender/20 flex items-center justify-center mb-6">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9B88E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                <line x1="11" y1="8" x2="11" y2="14"/>
+                <line x1="8" y1="11" x2="14" y2="11"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Object Finder</h3>
+            <p class="text-secondary leading-relaxed">
+              Looking for your keys, phone, or the door? Tell EyeGuide what you need and it guides you with directional cues — left, right, ahead — and approximate distance.
+            </p>
+          </article>
+
+          <!-- Social Assist -->
+          <article class="feature-card bg-bg p-8 rounded-[var(--radius-card)] border border-surface-variant/50 animate-on-scroll stagger-4">
+            <div class="w-12 h-12 rounded-full bg-lavender/20 flex items-center justify-center mb-6">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9B88E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Social Assist</h3>
+            <p class="text-secondary leading-relaxed">
+              Understand social situations with confidence. EyeGuide describes people around you — how many, what they are doing, their expressions and body language.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="py-20 md:py-32" aria-labelledby="how-it-works-heading">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+          <h2 id="how-it-works-heading" class="text-3xl md:text-4xl font-bold animate-on-scroll">
+            Simple to Use, Powerful to Experience
+          </h2>
+          <p class="mt-4 text-lg text-secondary animate-on-scroll">
+            Get started in seconds. No complex setup required.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+          <!-- Step 1 -->
+          <div class="text-center animate-on-scroll stagger-1">
+            <div class="w-16 h-16 rounded-full bg-lavender flex items-center justify-center mx-auto mb-6">
+              <span class="text-2xl font-bold text-ink">1</span>
+            </div>
+            <h3 class="text-xl font-semibold mb-3">Open the App</h3>
+            <p class="text-secondary leading-relaxed">
+              Launch EyeGuide on your iPhone or Android device. The AI assistant activates automatically and announces it is ready.
+            </p>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="text-center animate-on-scroll stagger-2">
+            <div class="w-16 h-16 rounded-full bg-lavender flex items-center justify-center mx-auto mb-6">
+              <span class="text-2xl font-bold text-ink">2</span>
+            </div>
+            <h3 class="text-xl font-semibold mb-3">Choose a Mode</h3>
+            <p class="text-secondary leading-relaxed">
+              Tap the Voice Guide button or select a feature — Scene, Read, Locate, or Social. Each mode is optimized for a specific task.
+            </p>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="text-center animate-on-scroll stagger-3">
+            <div class="w-16 h-16 rounded-full bg-lime flex items-center justify-center mx-auto mb-6">
+              <span class="text-2xl font-bold text-ink">3</span>
+            </div>
+            <h3 class="text-xl font-semibold mb-3">Hear the World</h3>
+            <p class="text-secondary leading-relaxed">
+              Point your camera and receive instant audio descriptions. EyeGuide speaks naturally, like a friend guiding you through your day.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI Technology Section -->
+    <section class="py-20 md:py-32 bg-ink text-surface" aria-labelledby="technology-heading">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 id="technology-heading" class="text-3xl md:text-4xl font-bold animate-on-scroll">
+              Powered by Advanced AI
+            </h2>
+            <p class="mt-6 text-lg text-secondary leading-relaxed animate-on-scroll">
+              EyeGuide leverages Google Gemini AI for real-time visual understanding. The AI processes camera images instantly and responds in natural, conversational language — no robotic text-to-speech.
+            </p>
+            <ul class="mt-8 space-y-4 animate-on-scroll" role="list">
+              <li class="flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-lime/20 flex items-center justify-center flex-shrink-0 mt-0.5" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D0F553" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                <span>Real-time voice guidance with live camera streaming</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-lime/20 flex items-center justify-center flex-shrink-0 mt-0.5" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D0F553" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                <span>Bilingual support — English and Chinese</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-lime/20 flex items-center justify-center flex-shrink-0 mt-0.5" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D0F553" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                <span>Adjustable detail levels — concise, standard, or detailed descriptions</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-lime/20 flex items-center justify-center flex-shrink-0 mt-0.5" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D0F553" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                <span>Conversational AI that remembers context within a session</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Visual representation of the app status card -->
+          <div class="flex justify-center animate-on-scroll" aria-hidden="true">
+            <div class="w-full max-w-sm">
+              <!-- Simulated app screen -->
+              <div class="bg-ink-light rounded-[2rem] p-6 border border-white/10">
+                <!-- Status card matching app design -->
+                <div class="bg-lavender rounded-[var(--radius-card)] p-6 mb-4">
+                  <div class="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-3 py-1.5 rounded-full w-fit mb-8">
+                    <span class="w-2 h-2 rounded-full bg-ink pulse-dot"></span>
+                    <span class="text-xs font-semibold text-ink">Live</span>
+                  </div>
+                  <p class="text-2xl font-semibold text-ink">Environment Scan</p>
+                  <p class="text-sm text-ink/70 mt-1">Session in progress</p>
+                </div>
+
+                <!-- Voice guide button matching app design -->
+                <div class="bg-white rounded-[var(--radius-card)] px-6 py-5 flex items-center justify-between">
+                  <span class="font-semibold text-ink">Start Voice Guide</span>
+                  <div class="w-10 h-10 rounded-full bg-lime flex items-center justify-center">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="#1A1A1A" aria-hidden="true">
+                      <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                      <path d="M19 10v2a7 7 0 0 1-14 0v-2" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round"/>
+                      <line x1="12" y1="19" x2="12" y2="23" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- Feature grid preview -->
+                <div class="grid grid-cols-2 gap-3 mt-4">
+                  <div class="bg-white/5 border border-white/10 rounded-2xl p-4">
+                    <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center mb-3">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    </div>
+                    <p class="text-sm font-medium text-white">Locate</p>
+                    <p class="text-xs text-white/50 mt-0.5">Keys, Phone, Door</p>
+                  </div>
+                  <div class="bg-white/5 border border-white/10 rounded-2xl p-4">
+                    <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center mb-3">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    </div>
+                    <p class="text-sm font-medium text-white">Read</p>
+                    <p class="text-xs text-white/50 mt-0.5">Signs, Menus, Mail</p>
+                  </div>
+                  <div class="bg-white/5 border border-white/10 rounded-2xl p-4">
+                    <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center mb-3">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                    </div>
+                    <p class="text-sm font-medium text-white">Social</p>
+                    <p class="text-xs text-white/50 mt-0.5">Recognize Faces</p>
+                  </div>
+                  <div class="bg-white/5 border border-white/10 rounded-2xl p-4">
+                    <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center mb-3">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </div>
+                    <p class="text-sm font-medium text-white">Scene</p>
+                    <p class="text-xs text-white/50 mt-0.5">Describe surroundings</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Download CTA Section -->
+    <section id="download" class="py-20 md:py-32" aria-labelledby="download-heading">
+      <div class="max-w-6xl mx-auto px-6 text-center">
+        <h2 id="download-heading" class="text-3xl md:text-5xl font-bold animate-on-scroll">
+          Navigate with Confidence
+        </h2>
+        <p class="mt-6 text-lg text-secondary max-w-xl mx-auto animate-on-scroll">
+          Download EyeGuide and experience AI-powered vision assistance on your iPhone or Android device.
+        </p>
+        <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center animate-on-scroll">
+          <!-- App Store Button -->
+          <a
+            href="#"
+            class="cta-primary inline-flex items-center justify-center gap-3 bg-ink text-surface px-8 py-4 rounded-[var(--radius-button)] min-h-[56px]"
+            aria-label="Download EyeGuide on the App Store"
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+            </svg>
+            <div class="text-left">
+              <div class="text-xs opacity-70">Download on the</div>
+              <div class="text-base font-semibold">App Store</div>
+            </div>
+          </a>
+
+          <!-- Google Play Button -->
+          <a
+            href="#"
+            class="cta-primary inline-flex items-center justify-center gap-3 bg-ink text-surface px-8 py-4 rounded-[var(--radius-button)] min-h-[56px]"
+            aria-label="Get EyeGuide on Google Play"
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.199l2.302 2.302a1 1 0 0 1 0 1.38l-2.302 2.302L15.396 12l2.302-3.492zM5.864 2.658L16.8 9.49l-2.302 2.302L5.864 2.658z"/>
+            </svg>
+            <div class="text-left">
+              <div class="text-xs opacity-70">Get it on</div>
+              <div class="text-base font-semibold">Google Play</div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-surface border-t border-surface-variant/50 py-12" role="contentinfo">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center gap-2">
+          <svg width="24" height="24" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <circle cx="16" cy="16" r="14" fill="#C8B8FF"/>
+            <circle cx="16" cy="16" r="6" fill="#1A1A1A"/>
+            <circle cx="18" cy="14" r="2" fill="#FFFFFF"/>
+          </svg>
+          <span class="text-base font-semibold">EyeGuide</span>
+        </div>
+        <p class="text-sm text-secondary">
+          &copy; 2026 EyeGuide. Built with care for accessibility.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Minimal JS: IntersectionObserver for scroll animations + Mobile menu toggle -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      /* Scroll-triggered animations */
+      var observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
+      );
+
+      document.querySelectorAll(".animate-on-scroll").forEach(function (el) {
+        observer.observe(el);
+      });
+
+      /* Mobile menu toggle */
+      var toggle = document.getElementById("mobile-menu-toggle");
+      var menu = document.getElementById("mobile-menu");
+      if (toggle && menu) {
+        toggle.addEventListener("click", function () {
+          var isOpen = menu.classList.toggle("open");
+          toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        });
+        menu.querySelectorAll("a").forEach(function (link) {
+          link.addEventListener("click", function () {
+            menu.classList.remove("open");
+            toggle.setAttribute("aria-expanded", "false");
+          });
+        });
+      }
+    });
+  </script>
+</body>
+</html>
