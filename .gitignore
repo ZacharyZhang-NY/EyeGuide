@@ -1,0 +1,56 @@
+# Credentials & secrets
+credential.md
+.env
+.env.local
+.env.*.local
+.dev.vars
+*.p12
+*.pem
+*.key
+*.keystore
+*.jks
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Editor / IDE
+.idea/
+*.xcuserdata/
+*.xcworkspace/xcuserdata/
+*.swp
+*~
+.vscode/
+
+# Build outputs
+build/
+dist/
+*.ipa
+*.apk
+*.aab
+
+# Dependencies
+node_modules/
+Pods/
+.gradle/
+.wrangler/
+
+# iOS / Xcode
+DerivedData/
+*.xcuserstate
+*.moved-aside
+*.hmap
+*.dSYM.zip
+*.dSYM
+
+# Android
+local.properties
+.cxx/
+
+# Misc
+*.log
+.claude/
