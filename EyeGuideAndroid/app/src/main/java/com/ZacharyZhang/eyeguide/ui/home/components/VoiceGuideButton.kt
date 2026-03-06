@@ -34,11 +34,11 @@ fun VoiceGuideButton(
         onClick = onClick,
         modifier = modifier
             .fillMaxWidth()
-            .height(56.dp)
+            .height(72.dp)
             .semantics {
                 contentDescription = "Start Voice Guide. Double tap to open voice assistant"
             },
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(24.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = EyeGuideInk,
             contentColor = EyeGuideLime,

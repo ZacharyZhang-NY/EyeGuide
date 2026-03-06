@@ -114,7 +114,7 @@ struct TextReaderView: View {
             } label: {
                 ZStack {
                     Circle()
-                        .fill(viewModel.speechService.isListening ? Color.red : Color.white)
+                        .fill(viewModel.speechService.isListening ? Color.red : Color(.systemGray5))
                         .frame(width: 64, height: 64)
                     Image(systemName: viewModel.speechService.isListening ? "stop.fill" : "mic.fill")
                         .font(.title2)

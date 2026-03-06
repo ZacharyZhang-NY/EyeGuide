@@ -42,7 +42,6 @@ fun HomeScreen(
     onNavigateToFeature: (String) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val displayName = uiState.user?.user?.deviceId?.take(8) ?: "User"
 
     Box(modifier = Modifier.fillMaxSize()) {
         if (uiState.isLoading) {
@@ -56,7 +55,7 @@ fun HomeScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(horizontal = 20.dp, vertical = 16.dp),
+                    .padding(horizontal = 24.dp, vertical = 16.dp),
             ) {
                 Spacer(modifier = Modifier.height(32.dp))
                 Row(
@@ -65,7 +64,7 @@ fun HomeScreen(
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            text = "Hi, $displayName",
+                            text = "Hi there",
                             style = MaterialTheme.typography.headlineLarge,
                             color = MaterialTheme.colorScheme.onBackground,
                             modifier = Modifier.semantics { heading() },
@@ -89,9 +88,9 @@ fun HomeScreen(
                         )
                     }
                 }
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(24.dp))
                 AIStatusCard(isSessionActive = uiState.activeSession != null)
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(20.dp))
                 VoiceGuideButton(onClick = onNavigateToVoiceGuide)
                 Spacer(modifier = Modifier.height(24.dp))
                 Text(
@@ -100,7 +99,7 @@ fun HomeScreen(
                     color = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier.semantics { heading() },
                 )
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(16.dp))
                 FeatureGrid(onFeatureClick = onNavigateToFeature)
                 Spacer(modifier = Modifier.height(24.dp))
                 ActivityTimeline(activities = uiState.recentActivity)
