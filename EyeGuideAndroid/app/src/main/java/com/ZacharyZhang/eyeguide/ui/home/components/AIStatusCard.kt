@@ -54,7 +54,7 @@ fun AIStatusCard(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(20.dp))
+            .clip(RoundedCornerShape(24.dp))
             .background(EyeGuideLavender)
             .padding(20.dp)
             .semantics {
@@ -69,9 +69,9 @@ fun AIStatusCard(
                 Box(
                     modifier = Modifier
                         .size(10.dp)
-                        .alpha(if (isSessionActive) pulseAlpha else 1f)
+                        .alpha(if (isSessionActive) pulseAlpha else 0.4f)
                         .clip(CircleShape)
-                        .background(EyeGuideSuccess),
+                        .background(if (isSessionActive) EyeGuideSuccess else MaterialTheme.colorScheme.onSurfaceVariant),
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(

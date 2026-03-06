@@ -5,42 +5,35 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- Iris circle with gradient -->
+    <!-- AI scan ring - lime green accent -->
     <path
-        android:pathData="M54,30 A24,24 0 1,1 54,78 A24,24 0 1,1 54,30 Z">
+        android:pathData="M30,54 A24,24 0 1,1 78,54 A24,24 0 1,1 30,54 Z"
+        android:strokeWidth="2"
+        android:strokeColor="#FFD0F553"
+        android:fillColor="#00000000" />
+
+    <!-- Iris/lens circle - dark with subtle radial gradient -->
+    <path
+        android:pathData="M32,54 A22,22 0 1,1 76,54 A22,22 0 1,1 32,54 Z">
         <aapt:attr name="android:fillColor">
             <gradient
                 android:centerX="54"
-                android:centerY="42"
-                android:gradientRadius="28"
+                android:centerY="49"
+                android:gradientRadius="26"
                 android:type="radial">
-                <item android:color="#FF0A84FF" android:offset="0.0" />
-                <item android:color="#FF005ADC" android:offset="1.0" />
+                <item android:color="#FF2C2C2E" android:offset="0.0" />
+                <item android:color="#FF1A1A1A" android:offset="1.0" />
             </gradient>
         </aapt:attr>
     </path>
 
-    <!-- Top eyelid arc -->
+    <!-- Main highlight reflection - white -->
     <path
-        android:pathData="M18,54 Q36,28 54,28 Q72,28 90,54"
-        android:strokeWidth="2.5"
-        android:strokeColor="#660A84FF"
-        android:fillColor="#00000000" />
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M56,46 A5,5 0 1,1 66,46 A5,5 0 1,1 56,46 Z" />
 
-    <!-- Bottom eyelid arc -->
+    <!-- AI indicator dot - lime green -->
     <path
-        android:pathData="M18,54 Q36,80 54,80 Q72,80 90,54"
-        android:strokeWidth="2.5"
-        android:strokeColor="#660A84FF"
-        android:fillColor="#00000000" />
-
-    <!-- Navigation arrow -->
-    <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M54,46 L49.5,56 L54,52.5 L58.5,56 Z" />
-
-    <!-- Compass dot -->
-    <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M54,58 A1.5,1.5 0 1,1 54,61 A1.5,1.5 0 1,1 54,58 Z" />
+        android:fillColor="#FFD0F553"
+        android:pathData="M45.5,62 A2.5,2.5 0 1,1 50.5,62 A2.5,2.5 0 1,1 45.5,62 Z" />
 </vector>

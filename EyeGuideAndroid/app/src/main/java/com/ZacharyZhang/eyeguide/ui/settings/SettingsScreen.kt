@@ -62,7 +62,7 @@ fun SettingsScreen(
     var selectedDetail by remember(prefs) { mutableStateOf(prefs?.descriptionDetail ?: "standard") }
     val detailOptions = listOf("concise", "standard", "detailed")
 
-    Column(modifier = Modifier.fillMaxSize().padding(horizontal = 20.dp)) {
+    Column(modifier = Modifier.fillMaxSize().padding(horizontal = 24.dp)) {
         Spacer(modifier = Modifier.height(16.dp))
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onBack, modifier = Modifier.size(48.dp).semantics {
