@@ -1,41 +1,27 @@
 import SwiftUI
 
 struct SocialAssistView: View {
-    @Environment(\.dismiss) private var dismiss
     @State private var viewModel = CameraViewModel()
 
     var body: some View {
-        ZStack {
-            Color.black.ignoresSafeArea()
-
-            VStack(spacing: 0) {
-                HStack {
-                    Button { dismiss() } label: {
-                        HStack(spacing: 4) {
-                            Image(systemName: "chevron.left")
-                            Text("Back")
-                        }
-                        .foregroundStyle(.white)
-                        .padding(8)
-                        .background(.ultraThinMaterial)
-                        .clipShape(Capsule())
-                    }
-                    .accessibilityLabel("Go back")
-                    Spacer()
-                    Text("Social Assist")
-                        .font(.headline)
-                        .foregroundStyle(.white)
-                    Spacer()
-                    Spacer().frame(width: 60)
+        ScrollView {
+            VStack(alignment: .leading, spacing: 20) {
+                cameraCard
+                statusPill
+                if !viewModel.aiResult.isEmpty {
+                    resultCard
                 }
-                .padding(.horizontal)
-                .padding(.top, 8)
-
-                cameraPreview
-                bottomPanel
+                if let error = viewModel.errorMessage {
+                    errorBanner(error)
+                }
+                controlsSection
             }
+            .padding(.horizontal, 24)
+            .padding(.bottom, 32)
         }
-        .navigationBarBackButtonHidden(true)
+        .background(Color(uiColor: .systemGroupedBackground))
+        .navigationTitle("Social")
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar(.hidden, for: .tabBar)
         .task {
             await viewModel.cameraService.requestAuthorization()
@@ -52,90 +38,157 @@ struct SocialAssistView: View {
             viewModel.speechService.stopListening()
             viewModel.speechService.stopSpeaking()
         }
+        .onChange(of: viewModel.errorMessage) { _, newError in
+            if let error = newError {
+                UIAccessibility.post(notification: .announcement, argument: error)
+            }
+        }
     }
 
-    private var cameraPreview: some View {
+    // MARK: - Camera
+
+    private var cameraCard: some View {
         ZStack {
             if viewModel.cameraService.isAuthorized {
                 if let frame = viewModel.cameraService.latestFrame {
                     Image(uiImage: frame)
                         .resizable()
                         .scaledToFill()
+                        .frame(height: 250)
                         .clipped()
+                        .accessibilityHidden(true)
                 } else {
-                    Color.black
-                    ProgressView().tint(.white)
+                    Color(.systemGray6)
+                        .frame(height: 250)
+                        .overlay {
+                            ProgressView()
+                                .accessibilityLabel("Starting camera")
+                        }
                 }
             } else {
-                VStack(spacing: 16) {
-                    Image(systemName: "camera.fill")
-                        .font(.largeTitle)
-                        .foregroundStyle(.white)
-                    Text("Camera access required")
-                        .foregroundStyle(.white)
-                }
+                Color(.systemGray6)
+                    .frame(height: 250)
+                    .overlay {
+                        VStack(spacing: 8) {
+                            Image(systemName: "camera.fill")
+                                .font(.title)
+                                .foregroundStyle(.secondary)
+                            Text("Camera access required")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("Camera access required. Open device Settings to enable camera.")
             }
 
-            if !viewModel.aiResult.isEmpty {
-                VStack {
-                    Spacer()
-                    Text(viewModel.aiResult)
-                        .font(.subheadline)
-                        .foregroundStyle(.white)
-                        .padding(12)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(.ultraThinMaterial)
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                        .padding(.horizontal)
-                        .padding(.bottom, 8)
-                }
+            if viewModel.isAnalyzing {
+                Color.black.opacity(0.3)
+                    .frame(height: 250)
+                ProgressView()
+                    .tint(.white)
+                    .scaleEffect(1.3)
+                    .accessibilityLabel("Analyzing people")
             }
-
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .frame(maxWidth: .infinity)
+        .frame(height: 250)
+        .clipShape(RoundedRectangle(cornerRadius: 28))
     }
 
-    private var bottomPanel: some View {
-        VStack(spacing: 16) {
-            if let error = viewModel.errorMessage {
-                Text(error)
-                    .font(.caption)
-                    .foregroundStyle(.red)
-                    .padding(.horizontal)
-            }
+    // MARK: - Status
 
-            Text("Live")
+    private var statusPill: some View {
+        HStack(spacing: 6) {
+            Circle()
+                .fill(viewModel.isAutoAnalyzing ? Color.green : Color.secondary)
+                .frame(width: 8, height: 8)
+            Text(viewModel.isAutoAnalyzing ? "Live" : "Paused")
+                .font(.caption)
+                .fontWeight(.medium)
+                .foregroundStyle(viewModel.isAutoAnalyzing ? .primary : .secondary)
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 6)
+        .background(Color(.systemBackground))
+        .clipShape(Capsule())
+        .overlay(Capsule().stroke(Color.primary.opacity(0.1), lineWidth: 1))
+        .accessibilityLabel(viewModel.isAutoAnalyzing ? "Live social analysis active" : "Analysis paused")
+    }
+
+    // MARK: - Result
+
+    private var resultCard: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("People Nearby")
                 .font(.caption)
                 .foregroundStyle(.secondary)
+            Text(viewModel.aiResult)
+                .font(.body)
+        }
+        .padding(20)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color(.systemBackground))
+        .clipShape(RoundedRectangle(cornerRadius: 28))
+        .overlay(
+            RoundedRectangle(cornerRadius: 28)
+                .stroke(Color.primary.opacity(0.1), lineWidth: 1)
+        )
+        .accessibilityLabel("People around you: \(viewModel.aiResult)")
+    }
 
+    // MARK: - Error
+
+    private func errorBanner(_ error: String) -> some View {
+        Text(error)
+            .font(.caption)
+            .foregroundStyle(.red)
+            .padding(12)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(Color.red.opacity(0.08))
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .accessibilityLabel("Error: \(error)")
+    }
+
+    // MARK: - Controls
+
+    private var controlsSection: some View {
+        VStack(spacing: 16) {
             Button {
+                HapticService.impact()
                 toggleVoiceInput()
             } label: {
-                ZStack {
-                    Circle()
-                        .fill(viewModel.speechService.isListening ? Color.red : Color(.systemGray5))
-                        .frame(width: 64, height: 64)
+                HStack {
                     Image(systemName: viewModel.speechService.isListening ? "stop.fill" : "mic.fill")
-                        .font(.title2)
-                        .foregroundStyle(.black)
+                        .font(.title3)
+                    Text(viewModel.speechService.isListening ? "Stop Listening" : "Ask a Question")
+                        .font(.body)
+                        .fontWeight(.semibold)
                 }
+                .foregroundStyle(viewModel.speechService.isListening ? .white : Color(uiColor: .systemBackground))
+                .frame(maxWidth: .infinity)
+                .frame(height: 56)
+                .background(viewModel.speechService.isListening ? Color.red : Color.primary)
+                .clipShape(RoundedRectangle(cornerRadius: 28))
             }
-            .accessibilityLabel(viewModel.speechService.isListening ? "Stop listening" : "Ask about the scene")
-            .padding(.bottom, 16)
+            .accessibilityLabel(viewModel.speechService.isListening ? "Stop listening" : "Ask about people nearby")
+            .accessibilityHint(viewModel.speechService.isListening ? "Stops recording and sends your question" : "Starts listening for your voice question")
         }
-        .padding(.top, 12)
-        .background(Color(uiColor: .systemBackground))
     }
+
+    // MARK: - Voice
 
     private func toggleVoiceInput() {
         if viewModel.speechService.isListening {
             viewModel.speechService.stopListening()
+            HapticService.notification(.success)
             let text = viewModel.speechService.recognizedText
             if !text.isEmpty {
                 Task { await viewModel.sendVoiceMessage(text) }
             }
         } else {
             viewModel.stopAutoAnalysis()
+            HapticService.notification(.warning)
             try? viewModel.speechService.startListening()
         }
     }

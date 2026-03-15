@@ -19,11 +19,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import com.ZacharyZhang.eyeguide.data.model.UsageStat
-import com.ZacharyZhang.eyeguide.ui.theme.EyeGuideSuccess
+import com.ZacharyZhang.eyeguide.data.local.LocalActivity
 import com.ZacharyZhang.eyeguide.ui.theme.EyeGuideError
+import com.ZacharyZhang.eyeguide.ui.theme.EyeGuideSuccess
+import java.text.DateFormat
+import java.util.Date
 
 private fun featureDisplayName(feature: String): String = when (feature) {
     "scene_description" -> "Scene Analysis"
@@ -31,13 +34,12 @@ private fun featureDisplayName(feature: String): String = when (feature) {
     "object_recognition" -> "Object Detection"
     "social_assistant" -> "Social Context"
     "voice_interaction" -> "Voice Chat"
-    "navigation" -> "Navigation"
     else -> feature.replace("_", " ").replaceFirstChar { it.uppercase() }
 }
 
 @Composable
 fun ActivityTimeline(
-    activities: List<UsageStat>,
+    activities: List<LocalActivity>,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
@@ -45,6 +47,7 @@ fun ActivityTimeline(
             text = "Recent Activity",
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.semantics { heading() },
         )
         Spacer(modifier = Modifier.height(12.dp))
         if (activities.isEmpty()) {
@@ -57,8 +60,8 @@ fun ActivityTimeline(
                 },
             )
         } else {
-            activities.forEach { stat ->
-                ActivityTimelineItem(stat = stat)
+            activities.take(5).forEach { activity ->
+                ActivityTimelineItem(activity = activity)
                 Spacer(modifier = Modifier.height(8.dp))
             }
         }
@@ -67,12 +70,12 @@ fun ActivityTimeline(
 
 @Composable
 private fun ActivityTimelineItem(
-    stat: UsageStat,
+    activity: LocalActivity,
     modifier: Modifier = Modifier,
 ) {
-    val displayName = featureDisplayName(stat.feature)
-    val statusText = if (stat.success) "Completed" else "Failed"
-    val time = stat.timestamp.substringAfter("T").take(5)
+    val displayName = featureDisplayName(activity.feature)
+    val statusText = if (activity.success) "Completed" else "Failed"
+    val timeText = DateFormat.getTimeInstance(DateFormat.SHORT).format(Date(activity.timestamp))
 
     Row(
         modifier = modifier
@@ -81,7 +84,7 @@ private fun ActivityTimelineItem(
             .background(MaterialTheme.colorScheme.surface)
             .padding(12.dp)
             .semantics {
-                contentDescription = "$displayName $statusText at $time"
+                contentDescription = "$displayName $statusText at $timeText"
             },
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -89,7 +92,7 @@ private fun ActivityTimelineItem(
             modifier = Modifier
                 .size(10.dp)
                 .clip(CircleShape)
-                .background(if (stat.success) EyeGuideSuccess else EyeGuideError),
+                .background(if (activity.success) EyeGuideSuccess else EyeGuideError),
         )
         Spacer(modifier = Modifier.width(12.dp))
         Column(modifier = Modifier.weight(1f)) {
@@ -105,7 +108,7 @@ private fun ActivityTimelineItem(
             )
         }
         Text(
-            text = time,
+            text = timeText,
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )

@@ -2,10 +2,10 @@ package com.ZacharyZhang.eyeguide.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ZacharyZhang.eyeguide.data.local.LocalActivity
+import com.ZacharyZhang.eyeguide.data.local.LocalActivityStore
 import com.ZacharyZhang.eyeguide.data.model.Session
-import com.ZacharyZhang.eyeguide.data.model.UsageStat
 import com.ZacharyZhang.eyeguide.data.model.UserWithPreferences
-import com.ZacharyZhang.eyeguide.data.repository.AIRepository
 import com.ZacharyZhang.eyeguide.data.repository.SessionRepository
 import com.ZacharyZhang.eyeguide.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +20,7 @@ data class HomeUiState(
     val isLoading: Boolean = true,
     val user: UserWithPreferences? = null,
     val activeSession: Session? = null,
-    val recentActivity: List<UsageStat> = emptyList(),
+    val recentActivity: List<LocalActivity> = emptyList(),
     val error: String? = null,
 )
 
@@ -28,7 +28,7 @@ data class HomeUiState(
 class HomeViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val sessionRepository: SessionRepository,
-    private val aiRepository: AIRepository,
+    private val localActivityStore: LocalActivityStore,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState())
@@ -55,12 +55,8 @@ class HomeViewModel @Inject constructor(
                 _uiState.update { it.copy(activeSession = session) }
             }
 
-            val usageResult = aiRepository.getUsage(limit = 10)
-            usageResult.onSuccess { response ->
-                _uiState.update { it.copy(recentActivity = response.stats) }
-            }
-
-            _uiState.update { it.copy(isLoading = false) }
+            val activities = localActivityStore.load()
+            _uiState.update { it.copy(recentActivity = activities, isLoading = false) }
         }
     }
 

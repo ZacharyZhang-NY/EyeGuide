@@ -93,8 +93,9 @@ final class GeminiLiveService: NSObject, @unchecked Sendable {
         webSocketTask?.cancel(with: .goingAway, reason: nil)
         webSocketTask = nil
         accumulatedText = ""
+        let strongSelf = self
         Task { @MainActor in
-            self.isConnected = false
+            strongSelf.isConnected = false
         }
     }
 
@@ -103,9 +104,10 @@ final class GeminiLiveService: NSObject, @unchecked Sendable {
             let string = String(data: data, encoding: .utf8)
         else { return }
         webSocketTask?.send(.string(string)) { [weak self] error in
-            if let error {
+            if let error, let self {
+                let callback = self.onError
                 Task { @MainActor in
-                    self?.onError?("Send error: \(error.localizedDescription)")
+                    callback?("Send error: \(error.localizedDescription)")
                 }
             }
         }
@@ -128,9 +130,11 @@ final class GeminiLiveService: NSObject, @unchecked Sendable {
                 }
                 self.receiveMessage()
             case .failure(let error):
+                let strongSelf = self
+                let callback = self.onError
                 Task { @MainActor in
-                    self.isConnected = false
-                    self.onError?("Connection lost: \(error.localizedDescription)")
+                    strongSelf.isConnected = false
+                    callback?("Connection lost: \(error.localizedDescription)")
                 }
             }
         }
@@ -142,8 +146,9 @@ final class GeminiLiveService: NSObject, @unchecked Sendable {
         else { return }
 
         if json["setupComplete"] != nil {
+            let strongSelf = self
             Task { @MainActor in
-                self.isConnected = true
+                strongSelf.isConnected = true
             }
             return
         }
@@ -158,16 +163,18 @@ final class GeminiLiveService: NSObject, @unchecked Sendable {
                     }
                 }
                 let current = accumulatedText
+                let textCallback = onTextUpdate
                 Task { @MainActor in
-                    self.onTextUpdate?(current)
+                    textCallback?(current)
                 }
             }
 
             if serverContent["turnComplete"] as? Bool == true {
                 let finalText = accumulatedText
                 accumulatedText = ""
+                let completeCallback = onTurnComplete
                 Task { @MainActor in
-                    self.onTurnComplete?(finalText)
+                    completeCallback?(finalText)
                 }
             }
         }

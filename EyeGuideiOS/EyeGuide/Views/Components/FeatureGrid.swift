@@ -25,6 +25,7 @@ struct FeatureGrid: View {
         ], spacing: 16) {
             ForEach(features) { feature in
                 Button {
+                    HapticService.impact(.light)
                     onFeatureTap(feature.mode)
                 } label: {
                     VStack(alignment: .leading, spacing: 12) {
@@ -56,6 +57,7 @@ struct FeatureGrid: View {
                     )
                 }
                 .accessibilityLabel("\(feature.label): \(feature.subtitle)")
+                .accessibilityHint("Double tap to open \(feature.label)")
             }
         }
     }

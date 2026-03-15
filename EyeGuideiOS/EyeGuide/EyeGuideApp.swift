@@ -20,6 +20,7 @@ struct RootView: View {
             MainTabView()
         } else {
             ProgressView("Connecting...")
+                .accessibilityLabel("Connecting to EyeGuide server. Please wait.")
                 .task { await appState.register() }
         }
     }

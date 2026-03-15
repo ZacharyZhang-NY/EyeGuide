@@ -10,7 +10,7 @@ struct AIStatusCard: View {
                 HStack(spacing: 6) {
                     Circle()
                         .fill(isActive ? Color.primary : Color.secondary)
-                        .frame(width: 8, height: 8)
+                        .frame(width: 10, height: 10)
                         .opacity(isActive ? 1 : 0.4)
                     Text(isActive ? "Live" : "Standby")
                         .font(.subheadline)

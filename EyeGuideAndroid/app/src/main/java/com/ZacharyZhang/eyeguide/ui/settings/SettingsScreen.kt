@@ -39,6 +39,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
@@ -52,6 +54,7 @@ fun SettingsScreen(
     onBack: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val haptic = LocalHapticFeedback.current
     val prefs = uiState.user?.preferences
     var showDeleteDialog by remember { mutableStateOf(false) }
     var voiceSpeed by remember(prefs) { mutableFloatStateOf(prefs?.voiceSpeed ?: 1.0f) }
@@ -127,6 +130,7 @@ fun SettingsScreen(
                 Spacer(modifier = Modifier.height(24.dp))
                 Button(
                     onClick = {
+                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                         viewModel.updatePreferences(
                             voiceSpeed = voiceSpeed, voicePitch = voicePitch,
                             descriptionDetail = selectedDetail, vibrationEnabled = vibrationEnabled,

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ZacharyZhang.eyeguide.data.model.ConversationEntry
 import com.ZacharyZhang.eyeguide.data.model.extractText
+import com.ZacharyZhang.eyeguide.data.local.LocalActivityStore
 import com.ZacharyZhang.eyeguide.data.repository.AIRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,6 +27,7 @@ data class CameraUiState(
 @HiltViewModel
 class CameraViewModel @Inject constructor(
     private val aiRepository: AIRepository,
+    private val localActivityStore: LocalActivityStore,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(CameraUiState())
@@ -39,11 +41,11 @@ class CameraViewModel @Inject constructor(
                 .onSuccess { response ->
                     val text = response.extractText()
                     _uiState.update { it.copy(isAnalyzing = false, result = text) }
-                    aiRepository.recordUsage("scene_description", success = true)
+                    localActivityStore.save("scene_description", success = true)
                 }
                 .onFailure { e ->
                     _uiState.update { it.copy(isAnalyzing = false, error = e.message) }
-                    aiRepository.recordUsage("scene_description", success = false, errorMessage = e.message)
+                    localActivityStore.save("scene_description", success = false)
                 }
         }
     }
@@ -55,11 +57,11 @@ class CameraViewModel @Inject constructor(
             aiRepository.readText(base64, language)
                 .onSuccess { response ->
                     _uiState.update { it.copy(isAnalyzing = false, result = response.extractText()) }
-                    aiRepository.recordUsage("text_reading", success = true)
+                    localActivityStore.save("text_reading", success = true)
                 }
                 .onFailure { e ->
                     _uiState.update { it.copy(isAnalyzing = false, error = e.message) }
-                    aiRepository.recordUsage("text_reading", success = false, errorMessage = e.message)
+                    localActivityStore.save("text_reading", success = false)
                 }
         }
     }
@@ -71,11 +73,11 @@ class CameraViewModel @Inject constructor(
             aiRepository.findObject(base64, targetObject, language)
                 .onSuccess { response ->
                     _uiState.update { it.copy(isAnalyzing = false, result = response.extractText()) }
-                    aiRepository.recordUsage("object_recognition", success = true)
+                    localActivityStore.save("object_recognition", success = true)
                 }
                 .onFailure { e ->
                     _uiState.update { it.copy(isAnalyzing = false, error = e.message) }
-                    aiRepository.recordUsage("object_recognition", success = false, errorMessage = e.message)
+                    localActivityStore.save("object_recognition", success = false)
                 }
         }
     }
@@ -87,11 +89,11 @@ class CameraViewModel @Inject constructor(
             aiRepository.analyzeSocial(base64, language)
                 .onSuccess { response ->
                     _uiState.update { it.copy(isAnalyzing = false, result = response.extractText()) }
-                    aiRepository.recordUsage("social_assistant", success = true)
+                    localActivityStore.save("social_assistant", success = true)
                 }
                 .onFailure { e ->
                     _uiState.update { it.copy(isAnalyzing = false, error = e.message) }
-                    aiRepository.recordUsage("social_assistant", success = false, errorMessage = e.message)
+                    localActivityStore.save("social_assistant", success = false)
                 }
         }
     }
@@ -110,11 +112,11 @@ class CameraViewModel @Inject constructor(
                     _uiState.update {
                         it.copy(isAnalyzing = false, result = text, conversationHistory = updatedHistory)
                     }
-                    aiRepository.recordUsage("voice_interaction", success = true)
+                    localActivityStore.save("voice_interaction", success = true)
                 }
                 .onFailure { e ->
                     _uiState.update { it.copy(isAnalyzing = false, error = e.message) }
-                    aiRepository.recordUsage("voice_interaction", success = false, errorMessage = e.message)
+                    localActivityStore.save("voice_interaction", success = false)
                 }
         }
     }

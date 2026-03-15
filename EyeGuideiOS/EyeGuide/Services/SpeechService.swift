@@ -3,7 +3,7 @@ import Speech
 import Observation
 
 @Observable
-final class SpeechService {
+final class SpeechService: NSObject, @unchecked Sendable {
     var isListening = false
     var recognizedText = ""
     var isSpeaking = false
@@ -17,6 +17,11 @@ final class SpeechService {
     @ObservationIgnored private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     @ObservationIgnored private var recognitionTask: SFSpeechRecognitionTask?
     @ObservationIgnored private let audioEngine = AVAudioEngine()
+
+    override init() {
+        super.init()
+        synthesizer.delegate = self
+    }
 
     func requestSpeechAuthorization() async -> Bool {
         await withCheckedContinuation { continuation in
@@ -39,14 +44,6 @@ final class SpeechService {
         utterance.voice = AVSpeechSynthesisVoice(language: language)
         isSpeaking = true
         synthesizer.speak(utterance)
-
-        Task { [weak self] in
-            guard let self else { return }
-            while self.synthesizer.isSpeaking {
-                try? await Task.sleep(for: .milliseconds(100))
-            }
-            self.isSpeaking = false
-        }
     }
 
     func stopSpeaking() {
@@ -56,6 +53,7 @@ final class SpeechService {
 
     func startListening() throws {
         stopListening()
+        recognizedText = ""
 
         recognizer = SFSpeechRecognizer(locale: Locale(identifier: language))
         recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
@@ -67,8 +65,11 @@ final class SpeechService {
 
         recognitionRequest.shouldReportPartialResults = true
 
+        // Stop any ongoing speech before switching audio session
+        synthesizer.stopSpeaking(at: .immediate)
+
         let audioSession = AVAudioSession.sharedInstance()
-        try audioSession.setCategory(.record, mode: .measurement, options: .duckOthers)
+        try audioSession.setCategory(.playAndRecord, mode: .measurement, options: [.duckOthers, .defaultToSpeaker])
         try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
 
         let inputNode = audioEngine.inputNode
@@ -84,15 +85,14 @@ final class SpeechService {
 
         recognitionTask = recognizer.recognitionTask(
             with: recognitionRequest
-        ) { [weak self] result, error in
+        ) { [weak self] result, _ in
             Task { @MainActor [weak self] in
                 guard let self else { return }
                 if let result {
                     self.recognizedText = result.bestTranscription.formattedString
                 }
-                if error != nil || (result?.isFinal ?? false) {
-                    self.stopListening()
-                }
+                // Don't auto-stop: let the user explicitly tap to stop and submit.
+                // The audio engine keeps running until stopListening() is called.
             }
         }
     }
@@ -109,5 +109,25 @@ final class SpeechService {
         let audioSession = AVAudioSession.sharedInstance()
         try? audioSession.setCategory(.playback, mode: .default, options: .duckOthers)
         try? audioSession.setActive(true, options: .notifyOthersOnDeactivation)
+    }
+}
+
+extension SpeechService: AVSpeechSynthesizerDelegate {
+    nonisolated func speechSynthesizer(
+        _ synthesizer: AVSpeechSynthesizer,
+        didFinish utterance: AVSpeechUtterance
+    ) {
+        Task { @MainActor in
+            self.isSpeaking = false
+        }
+    }
+
+    nonisolated func speechSynthesizer(
+        _ synthesizer: AVSpeechSynthesizer,
+        didCancel utterance: AVSpeechUtterance
+    ) {
+        Task { @MainActor in
+            self.isSpeaking = false
+        }
     }
 }

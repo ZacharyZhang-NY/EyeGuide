@@ -5,6 +5,7 @@ struct VoiceGuideButton: View {
 
     var body: some View {
         Button {
+            HapticService.impact()
             onTap()
         } label: {
             HStack {

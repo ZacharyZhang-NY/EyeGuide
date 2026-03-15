@@ -3,20 +3,14 @@ import Observation
 
 @Observable
 final class HomeViewModel {
-    var recentSessions: [Session] = []
+    var recentActivities: [LocalActivity] = []
     var isLoading = false
     var errorMessage: String?
     var activeSession: Session?
 
-    func loadRecentActivity() async {
+    func loadRecentActivity() {
         isLoading = true
-        errorMessage = nil
-        do {
-            let response = try await APIService.shared.getSessions(limit: 5)
-            recentSessions = response.sessions
-        } catch {
-            errorMessage = error.localizedDescription
-        }
+        recentActivities = LocalActivityStore.shared.load()
         isLoading = false
     }
 

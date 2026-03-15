@@ -23,7 +23,7 @@ struct HomeView: View {
                         navigationPath.append(mode)
                     }
                     ActivityTimeline(
-                        sessions: viewModel.recentSessions,
+                        activities: viewModel.recentActivities,
                         isLoading: viewModel.isLoading
                     )
                 }
@@ -35,11 +35,11 @@ struct HomeView: View {
                 featureView(for: mode)
             }
             .task {
-                await viewModel.loadRecentActivity()
+                viewModel.loadRecentActivity()
                 await viewModel.checkActiveSession()
             }
             .refreshable {
-                await viewModel.loadRecentActivity()
+                viewModel.loadRecentActivity()
             }
         }
     }
@@ -50,10 +50,13 @@ struct HomeView: View {
                 Text("Hi there")
                     .font(.largeTitle)
                     .fontWeight(.bold)
+                    .accessibilityAddTraits(.isHeader)
                 Text("EyeGuide AI is ready")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("Welcome. EyeGuide AI is ready.")
             Spacer()
             NavigationLink(destination: SettingsView()) {
                 Image(systemName: "gearshape.fill")
@@ -61,10 +64,9 @@ struct HomeView: View {
                     .foregroundStyle(.secondary)
             }
             .accessibilityLabel("Settings")
+            .accessibilityHint("Opens app settings")
         }
         .padding(.top, 16)
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("Welcome. EyeGuide AI is ready.")
     }
 
     @ViewBuilder

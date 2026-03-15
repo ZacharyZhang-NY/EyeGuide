@@ -1,5 +1,6 @@
 import Foundation
 import Observation
+import UIKit
 
 enum AIMode: String, CaseIterable, Hashable {
     case scene = "Scene"
@@ -49,6 +50,8 @@ final class CameraViewModel {
 
                 let systemPrompt = self.systemPromptForMode(self.aiMode)
 
+                var wsConnected = false
+
                 self.liveService.connect(
                     config: GeminiLiveService.Config(
                         apiKey: config.apiKey,
@@ -66,7 +69,8 @@ final class CameraViewModel {
                         self.speechService.speak(text)
                     },
                     onError: { [weak self] error in
-                        self?.errorMessage = error
+                        guard let self, wsConnected else { return }
+                        self.errorMessage = error
                     }
                 )
 
@@ -78,10 +82,12 @@ final class CameraViewModel {
                 }
 
                 guard self.liveService.isConnected, !Task.isCancelled else {
-                    // Fallback to HTTP if WebSocket fails
+                    self.liveService.disconnect()
                     await MainActor.run { self.startHTTPAutoAnalysis() }
                     return
                 }
+
+                wsConnected = true
 
                 // Stream camera frames at ~1 FPS
                 self.frameStreamTask = Task { [weak self] in
@@ -172,10 +178,8 @@ final class CameraViewModel {
             switch aiMode {
             case .scene:
                 response = try await api.analyzeScene(imageBase64: base64)
-                try await api.recordUsage(feature: "scene_description", success: true)
             case .readText:
                 response = try await api.readText(imageBase64: base64)
-                try await api.recordUsage(feature: "text_reading", success: true)
             case .findObject:
                 guard !objectQuery.isEmpty else {
                     errorMessage = "Please specify what to find"
@@ -185,20 +189,19 @@ final class CameraViewModel {
                 response = try await api.findObject(
                     imageBase64: base64, targetObject: objectQuery
                 )
-                try await api.recordUsage(feature: "object_recognition", success: true)
             case .social:
                 response = try await api.analyzeSocial(imageBase64: base64)
-                try await api.recordUsage(feature: "social_assistant", success: true)
             }
 
             let text = response.textContent
             aiResult = text
             speechService.speak(text)
+            HapticService.notification(.success)
+            LocalActivityStore.shared.save(feature: aiMode.usageFeatureName, success: true)
         } catch {
             errorMessage = error.localizedDescription
-            try? await APIService.shared.recordUsage(
-                feature: aiMode.usageFeatureName, success: false
-            )
+            HapticService.notification(.error)
+            LocalActivityStore.shared.save(feature: aiMode.usageFeatureName, success: false)
         }
 
         isAnalyzing = false
@@ -221,9 +224,7 @@ final class CameraViewModel {
             conversationHistory.append(ConversationEntry(role: "user", text: text))
             conversationHistory.append(ConversationEntry(role: "model", text: resultText))
             speechService.speak(resultText)
-            try await APIService.shared.recordUsage(
-                feature: "voice_interaction", success: true
-            )
+            LocalActivityStore.shared.save(feature: "voice_interaction", success: true)
         } catch {
             errorMessage = error.localizedDescription
         }

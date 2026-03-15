@@ -9,6 +9,7 @@ final class CameraService: NSObject, @unchecked Sendable {
 
     @ObservationIgnored nonisolated(unsafe) private var captureSession: AVCaptureSession?
     @ObservationIgnored nonisolated(unsafe) private var videoOutput: AVCaptureVideoDataOutput?
+    @ObservationIgnored private let ciContext = CIContext()
     @ObservationIgnored private let sessionQueue = DispatchQueue(
         label: "com.eyeguide.camera"
     )
@@ -112,8 +113,7 @@ extension CameraService: AVCaptureVideoDataOutputSampleBufferDelegate {
     ) {
         guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
         let ciImage = CIImage(cvPixelBuffer: pixelBuffer)
-        let context = CIContext()
-        guard let cgImage = context.createCGImage(ciImage, from: ciImage.extent) else { return }
+        guard let cgImage = ciContext.createCGImage(ciImage, from: ciImage.extent) else { return }
         let uiImage = UIImage(cgImage: cgImage)
 
         Task { @MainActor [weak self] in

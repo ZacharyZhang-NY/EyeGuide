@@ -68,7 +68,7 @@ fun AIStatusCard(
             ) {
                 Box(
                     modifier = Modifier
-                        .size(10.dp)
+                        .size(12.dp)
                         .alpha(if (isSessionActive) pulseAlpha else 0.4f)
                         .clip(CircleShape)
                         .background(if (isSessionActive) EyeGuideSuccess else MaterialTheme.colorScheme.onSurfaceVariant),
