@@ -3,7 +3,7 @@ import Foundation
 final class APIService {
     static let shared = APIService()
 
-    private let baseURL = "https://eyeguide-api.zhangyanghaha0407.workers.dev"
+    private let baseURL = "https://eyeguide-api-1048901501985.us-central1.run.app"
     private let session: URLSession
     private let decoder: JSONDecoder
 

@@ -2,7 +2,7 @@
   <img src="https://img.shields.io/badge/iOS-Swift%20%7C%20SwiftUI-FA7343?style=flat-square&logo=swift&logoColor=white" alt="iOS">
   <img src="https://img.shields.io/badge/Android-Kotlin%20%7C%20Compose-7F52FF?style=flat-square&logo=kotlin&logoColor=white" alt="Android">
   <img src="https://img.shields.io/badge/AI-Google%20Gemini-4285F4?style=flat-square&logo=google&logoColor=white" alt="Gemini">
-  <img src="https://img.shields.io/badge/Backend-Cloudflare%20Workers-F38020?style=flat-square&logo=cloudflare&logoColor=white" alt="Cloudflare">
+  <img src="https://img.shields.io/badge/Backend-Google%20Cloud%20Run-4285F4?style=flat-square&logo=googlecloud&logoColor=white" alt="Cloud Run">
   <img src="https://img.shields.io/badge/Database-Neon%20PostgreSQL-00E599?style=flat-square&logo=postgresql&logoColor=white" alt="Neon">
 </p>
 
@@ -49,7 +49,7 @@ Continuous AI-powered guidance via live camera streaming and WebSocket, with bid
            ▼           ▼
 ┌──────────────────────────────────┐
 │   Backend API                    │
-│   Cloudflare Workers + Hono.js   │
+│   Google Cloud Run + Hono.js     │
 │   Neon PostgreSQL                │
 └──────────────┬───────────────────┘
                │
@@ -96,7 +96,7 @@ EyeGuide/
 |-------|-----------|
 | **iOS** | Swift, SwiftUI, AVFoundation, Speech framework |
 | **Android** | Kotlin, Jetpack Compose, CameraX, Hilt |
-| **Backend** | TypeScript, Hono.js, Cloudflare Workers |
+| **Backend** | TypeScript, Hono.js, Google Cloud Run |
 | **Database** | Neon (serverless PostgreSQL) |
 | **AI** | Google Gemini 2.5 Flash, Gemini Live WebSocket |
 | **Landing Page** | Vite, Tailwind CSS |
@@ -109,7 +109,7 @@ EyeGuide/
 
 - **iOS**: Xcode 15+, iOS 17+
 - **Android**: Android Studio, SDK 24+ (Android 7.0)
-- **Backend**: Node.js 18+, Wrangler CLI
+- **Backend**: Node.js 18+, gcloud CLI
 
 ### iOS
 
@@ -131,9 +131,9 @@ cd EyeGuideAndroid
 ```bash
 cd EyeGuideBackend
 npm install
-cp .dev.vars.example .dev.vars   # Add your API keys
-npx wrangler dev                 # Local development
-npx wrangler deploy              # Deploy to Cloudflare
+cp .dev.vars.example .env        # Add your API keys
+npm run dev                      # Local development
+gcloud run deploy eyeguide-api --source=. --region=us-central1  # Deploy to Cloud Run
 ```
 
 ---
