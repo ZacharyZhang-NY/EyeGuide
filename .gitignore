@@ -54,3 +54,4 @@ local.properties
 # Misc
 *.log
 .claude/
+content.md
